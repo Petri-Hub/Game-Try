@@ -6,8 +6,13 @@ export class KeyHandler {
    private onKeyUpListener: IKeyListener[] = []
 
    constructor() {
-      window.addEventListener('keydown', event => this.handleKeyDown(event))
-      window.addEventListener('keyup', event => this.handleKeyUp(event))
+      window.addEventListener('keydown', this.handleKeyDown.bind(this))
+      window.addEventListener('keyup', this.handleKeyUp.bind(this))
+   }
+
+   public destroy(){
+      window.removeEventListener('keydown', this.handleKeyDown.bind(this))
+      window.removeEventListener('keydown', this.handleKeyUp.bind(this))
    }
 
    public onKeyDown({ key, listener, allowRepeat = false }: IKeyListener) {
@@ -28,14 +33,14 @@ export class KeyHandler {
 
    private handleKeyDown({ key, repeat }: KeyboardEvent) {
       this.onKeyDownListeners
-         .filter(keyListener=> this.isListenerForKey(keyListener, key))
+         .filter(keyListener => this.isListenerForKey(keyListener, key))
          .filter(keyListener => repeat ? keyListener.allowRepeat : true)
          .forEach(keyListener => keyListener.listener())
    }
 
    private handleKeyUp({ key, repeat }: KeyboardEvent) {
       this.onKeyUpListener
-         .filter(keyListener=> this.isListenerForKey(keyListener, key))
+         .filter(keyListener => this.isListenerForKey(keyListener, key))
          .filter(keyListener => repeat ? keyListener.allowRepeat : true)
          .forEach(keyListener => keyListener.listener())
    }

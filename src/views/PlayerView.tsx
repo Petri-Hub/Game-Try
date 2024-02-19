@@ -1,7 +1,14 @@
 import { usePlayerContext } from "../contexts/usePlayerContext"
 
 export const PlayerView = () => {
-   const player = usePlayerContext()   
+   const player = usePlayerContext()
+
+   const { 
+      x, 
+      y, 
+      maxHealth, 
+      health 
+   } = player
 
    return (
       <div style={{
@@ -9,10 +16,11 @@ export const PlayerView = () => {
          height: '50px',
          background: 'coral',
          position: 'absolute',
-         top: player.y + 'px',
-         left: player.x + 'px'
+         top: y + 'px',
+         left: x + 'px',
+         borderRadius: '8px'
       }}>
-         Player
+         Player ({health}/{maxHealth})
       </div>
    )
 }
